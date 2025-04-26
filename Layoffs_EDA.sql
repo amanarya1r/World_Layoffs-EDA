@@ -77,3 +77,38 @@ SELECT YEAR(`date`), SUM(total_laid_off)
 FROM layoffs_staging
 GROUP BY YEAR(`date`)
 ORDER BY 1 DESC;
+
+-- Stage at which companies laid off:
+-- =============================================== --
+SELECT stage, SUM(total_laid_off)
+FROM layoffs_staging
+GROUP BY stage
+ORDER BY stage DESC;
+
+-- Layoffs on the basis of months:
+-- =============================================== --
+SELECT SUBSTRING(`date`,6,2) AS `MONTH`, SUM(total_laid_off)
+FROM layoffs_staging
+GROUP BY `MONTH`;
+
+-- Layoffs on the basis of YY-MM
+-- =============================================== --
+SELECT SUBSTRING(`date`,1,7) AS `MONTH`, SUM(total_laid_off)
+FROM layoffs_staging
+WHERE SUBSTRING(`date`,1,7) IS NOT NULL
+GROUP BY `MONTH`
+ORDER BY 1 ASC;
+
+-- Rolling sum of layoffs on the basis of YY-MM:
+-- =============================================== --
+WITH Rolling_Total AS
+(
+	SELECT SUBSTRING(`date`,1,7) AS `MONTH`, SUM(total_laid_off) AS total_off
+	FROM layoffs_staging
+	WHERE SUBSTRING(`date`,1,7) IS NOT NULL
+	GROUP BY `MONTH`
+	ORDER BY 1 ASC
+)
+SELECT `MONTH`, total_off, SUM(total_off) OVER(ORDER BY `MONTH`) AS rolling_total
+FROM Rolling_Total;
+
