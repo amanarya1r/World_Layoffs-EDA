@@ -112,3 +112,71 @@ WITH Rolling_Total AS
 SELECT `MONTH`, total_off, SUM(total_off) OVER(ORDER BY `MONTH`) AS rolling_total
 FROM Rolling_Total;
 
+-- Companies laying off per year:
+-- =============================================== --
+SELECT company, YEAR(`date`), SUM(total_laid_off)
+FROM layoffs_staging
+GROUP BY company, YEAR(`date`)
+ORDER BY company ASC;
+
+-- Companies laying off per year and which year they laid off the most:
+-- =============================================== --
+SELECT company, YEAR(`date`), SUM(total_laid_off)
+FROM layoffs_staging
+GROUP BY company, YEAR(`date`)
+ORDER BY 3 DESC;
+
+-- Year at which companies laid off the most:
+-- =============================================== --
+WITH Company_Year (company, years, total_laid_off) AS 
+(
+	SELECT company, YEAR(`date`), SUM(total_laid_off)
+    FROM layoffs_staging
+    GROUP BY company, YEAR(`date`)
+) 
+SELECT * 
+FROM Company_Year;
+
+-- Highest laid off by companies per year:
+-- =============================================== --
+WITH Company_Year (company, years, total_laid_off) AS 
+(
+	SELECT company, YEAR(`date`), SUM(total_laid_off)
+    FROM layoffs_staging
+    GROUP BY company, YEAR(`date`)
+) 
+SELECT *, DENSE_RANK() OVER (PARTITION BY years ORDER BY total_laid_off DESC)
+FROM Company_Year
+WHERE years IS NOT NULL;
+
+-- Highest laid off by companies per year and rank:
+-- =============================================== --
+WITH Company_Year (company, years, total_laid_off) AS 
+(
+	SELECT company, YEAR(`date`), SUM(total_laid_off)
+    FROM layoffs_staging
+    GROUP BY company, YEAR(`date`)
+) 
+SELECT *, 
+DENSE_RANK() OVER (PARTITION BY years ORDER BY total_laid_off DESC)
+AS Ranking
+FROM Company_Year
+WHERE years IS NOT NULL
+ORDER BY Ranking ASC;
+
+-- Highest laid off by companies per year and rank of top 5:
+-- =============================================== --
+WITH Company_Year (company, years, total_laid_off) AS 
+(
+	SELECT company, YEAR(`date`), SUM(total_laid_off)
+    FROM layoffs_staging
+    GROUP BY company, YEAR(`date`)
+), Company_Year_Rank AS
+( SELECT *, 
+DENSE_RANK() OVER (PARTITION BY years ORDER BY total_laid_off DESC)
+AS Ranking
+FROM Company_Year
+WHERE years IS NOT NULL)
+SELECT *
+FROM Company_Year_Rank
+WHERE Ranking <= 5;
