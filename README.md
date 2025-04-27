@@ -67,8 +67,8 @@ Performed detailed queries to explore:
 - Created **Common Table Expressions (CTEs)** for rolling sums and rankings.
 
 ## EDA Results (Snapshots)
-> Below are the pictures which shows only fraction of results show to know the complete details of result you kneed to run sql query.
-> There are also two tables which shows complete result.
+> Below are the pictures which shows only fraction of results, to know the complete details of results, you have to run sql queries(provided in this repo inside Layoffs_EDA.sql).
+> There are also two tables which show complete result.
 
 <details>
   <summary>Click to Expand</summary>
