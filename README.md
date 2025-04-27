@@ -2,7 +2,7 @@
 
 ## About
 
-This MySQL project focuses on conducting **Exploratory Data Analysis (EDA)** on a cleaned global layoffs dataset. The objective is to uncover key trends and patterns in employee layoffs across industries, countries, and years, and prepare insights for future dashboarding and reporting.
+This MySQL project focuses on conducting **Exploratory Data Analysis (EDA)** on a cleaned World Layoffs dataset. The objective is to uncover key trends and patterns in employee layoffs across industries, countries, and years, and prepare insights for future dashboarding and reporting.
 
 The dataset was sourced from the [Kaggle World Layoffs Dataset](https://www.kaggle.com/datasets/swaptr/layoffs-2022) and cleaned in the companion project, [World Layoffs - Data Cleaning](https://github.com/amanarya1r/World_Layoffs-Data_Cleaning).
 
@@ -67,6 +67,8 @@ Performed detailed queries to explore:
 - Created **Common Table Expressions (CTEs)** for rolling sums and rankings.
 
 ## EDA Results (Snapshots)
+> Below are the pictures which shows only fraction of results show to know the complete details of result you kneed to run sql query.
+> There are also two tables which shows complete result.
 
 <details>
   <summary>Click to Expand</summary>
